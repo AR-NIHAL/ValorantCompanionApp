@@ -20,14 +20,14 @@ class _BannerSliderState extends State<BannerSlider> {
       "image": "https://media.valorant-api.com/agents/9f0d8ba9-4140-b941-57d3-a7ad57c6b417/fullportrait.png"
     },
     {
-      "title": "SAGE",
+      "title": "VANDAL",
       "subtitle": "The Healer",
-      "image": "https://media.valorant-api.com/agents/569fdd95-4d10-43ab-ca70-79becc718b46/fullportrait.png"
+      "image": "https://media.valorant-api.com/weapons/9c82e19d-4575-0200-1a81-3eacf00cf872/displayicon.png"
     },
     {
-      "title": "PHOENIX",
+      "title": "ASCENT",
       "subtitle": "Fire Duelist",
-      "image": "https://media.valorant-api.com/agents/eb93336a-449b-9c1b-0a54-a891f7921d69/fullportrait.png"
+      "image": "https://media.valorant-api.com/maps/7eaecc1b-4337-bbf6-6ab9-04b8f06b3319/displayicon.png"
     },
   ];
 
