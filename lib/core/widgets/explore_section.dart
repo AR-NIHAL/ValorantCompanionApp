@@ -10,9 +10,9 @@ class ExploreSection extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         gradient: LinearGradient(
-          colors: [color.withOpacity(0.3), color.withOpacity(0.7)],
+          colors: [color.withValues(alpha: 0.3), color.withValues(alpha: 0.7)],
         ),
-        border: Border.all(color: color.withOpacity(0.5)),
+        border: Border.all(color: color.withValues(alpha: 0.5)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
