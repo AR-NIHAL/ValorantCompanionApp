@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'banner_card.dart';
 
 class BannerSlider extends StatefulWidget {
   const BannerSlider({super.key});
@@ -10,24 +11,28 @@ class BannerSlider extends StatefulWidget {
 }
 
 class _BannerSliderState extends State<BannerSlider> {
-  final PageController _controller = PageController();
-  int _currentPage = 0;
+  final PageController controller = PageController();
+  int index = 0;
+  Timer? timer;
 
-  final List<Map<String, String>> banners = [
+  final items = [
     {
       "title": "JETT",
       "subtitle": "The Wind Master",
-      "image": "https://media.valorant-api.com/agents/9f0d8ba9-4140-b941-57d3-a7ad57c6b417/fullportrait.png"
+      "image":
+          "https://media.valorant-api.com/agents/9f0d8ba9-4140-b941-57d3-a7ad57c6b417/fullportrait.png"
     },
     {
-      "title": "VANDAL",
-      "subtitle": "The Healer",
-      "image": "https://media.valorant-api.com/weapons/9c82e19d-4575-0200-1a81-3eacf00cf872/displayicon.png"
+      "title": "FRENZY",
+      "subtitle": "Fast Weapon",
+      "image":
+          "https://media.valorant-api.com/weapons/44d4e95c-4157-0037-81b2-17841bf2e8e3/displayicon.png"
     },
     {
       "title": "ASCENT",
-      "subtitle": "Fire Duelist",
-      "image": "https://media.valorant-api.com/maps/7eaecc1b-4337-bbf6-6ab9-04b8f06b3319/displayicon.png"
+      "subtitle": "Popular Map",
+      "image":
+          "https://media.valorant-api.com/maps/7eaecc1b-4337-bbf6-6ab9-04b8f06b3319/displayicon.png"
     },
   ];
 
@@ -35,20 +40,22 @@ class _BannerSliderState extends State<BannerSlider> {
   void initState() {
     super.initState();
 
-    // AUTO SCROLL
-    Timer.periodic(const Duration(seconds: 3), (timer) {
-      if (_currentPage < banners.length - 1) {
-        _currentPage++;
-      } else {
-        _currentPage = 0;
-      }
+    timer = Timer.periodic(const Duration(seconds: 3), (_) {
+      index = (index + 1) % items.length;
 
-      _controller.animateToPage(
-        _currentPage,
+      controller.animateToPage(
+        index,
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
     });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -58,81 +65,26 @@ class _BannerSliderState extends State<BannerSlider> {
         SizedBox(
           height: 200,
           child: PageView.builder(
-            controller: _controller,
-            itemCount: banners.length,
-            onPageChanged: (index) {
-              _currentPage = index;
-            },
-            itemBuilder: (context, index) {
-              final item = banners[index];
-
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF1F2A36), Color(0xFF0F1923)],
-                  ),
-                ),
-                child: Stack(
-                  children: [
-                    // IMAGE
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Image.network(
-                        item["image"]!,
-                        height: 180,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-
-                    // TEXT
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item["title"]!,
-                            style: const TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            item["subtitle"]!,
-                            style: const TextStyle(color: Colors.white70),
-                          ),
-                          const SizedBox(height: 10),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                            ),
-                            onPressed: () {},
-                            child: const Text("VIEW AGENT"),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+            controller: controller,
+            itemCount: items.length,
+            itemBuilder: (context, i) {
+              final item = items[i];
+              return BannerCard(
+                title: item["title"]!,
+                subtitle: item["subtitle"]!,
+                image: item["image"]!,
               );
             },
           ),
         ),
-
         const SizedBox(height: 10),
-
-        // INDICATOR
         SmoothPageIndicator(
-          controller: _controller,
-          count: banners.length,
+          controller: controller,
+          count: items.length,
           effect: const WormEffect(
-            dotHeight: 8,
-            dotWidth: 8,
-            activeDotColor: Colors.red,
+            dotHeight: 6,
+            dotWidth: 6,
+            activeDotColor: Colors.white,
           ),
         ),
       ],

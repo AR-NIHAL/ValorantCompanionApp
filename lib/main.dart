@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:valorant_companion_app/features/home/home_screen.dart';
 import 'app/theme/app_theme.dart';
-import 'features/home/home_screen.dart';
+import 'app/main_screen.dart';
 
 void main() {
   runApp(const MyApp());
