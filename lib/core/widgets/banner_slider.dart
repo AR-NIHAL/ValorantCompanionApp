@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:valorant_companion_app/features/agents/agents_screen.dart';
+import 'package:valorant_companion_app/features/maps/maps_screen.dart';
+import 'package:valorant_companion_app/features/weapons/weapons_screen.dart';
 import 'banner_card.dart';
 
 class BannerSlider extends StatefulWidget {
@@ -68,13 +71,49 @@ class _BannerSliderState extends State<BannerSlider> {
             controller: controller,
             itemCount: items.length,
             itemBuilder: (context, i) {
-              final item = items[i];
-              return BannerCard(
-                title: item["title"]!,
-                subtitle: item["subtitle"]!,
-                image: item["image"]!,
-              );
-            },
+  final item = items[i];
+
+  if (i == 0) {
+    return BannerCard(
+      title: item["title"]!,
+      subtitle: item["subtitle"]!,
+      image: item["image"]!,
+      buttonText: "VIEW AGENT",
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const AgentsScreen()),
+        );
+      },
+    );
+  } else if (i == 1) {
+    return BannerCard(
+      title: item["title"]!,
+      subtitle: item["subtitle"]!,
+      image: item["image"]!,
+      buttonText: "VIEW GUNS",
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const WeaponsScreen()),
+        );
+      },
+    );
+  } else {
+    return BannerCard(
+      title: item["title"]!,
+      subtitle: item["subtitle"]!,
+      image: item["image"]!,
+      buttonText: "VIEW MAPS",
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const MapsScreen()),
+        );
+      },
+    );
+  }
+},
           ),
         ),
         const SizedBox(height: 10),
