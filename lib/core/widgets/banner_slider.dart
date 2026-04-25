@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:valorant_companion_app/features/agents/agents_screen.dart';
-import 'package:valorant_companion_app/features/maps/maps_screen.dart';
-import 'package:valorant_companion_app/features/weapons/weapons_screen.dart';
+import 'package:valorant_companion_app/features/agents/agent_detail_screen.dart';
+import 'package:valorant_companion_app/features/maps/map_detail_screen.dart';
+import 'package:valorant_companion_app/features/weapons/weapon_detail_screen.dart';
 import 'banner_card.dart';
 
 class BannerSlider extends StatefulWidget {
@@ -80,11 +80,13 @@ class _BannerSliderState extends State<BannerSlider> {
       image: item["image"]!,
       buttonText: "VIEW AGENT",
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const AgentsScreen()),
-        );
-      },
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const AgentDetailScreen(),
+    ),
+  );
+},
     );
   } else if (i == 1) {
     return BannerCard(
@@ -94,9 +96,9 @@ class _BannerSliderState extends State<BannerSlider> {
       buttonText: "VIEW GUNS",
       onTap: () {
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const WeaponsScreen()),
-        );
+  context,
+  MaterialPageRoute(builder: (_) => const WeaponDetailScreen()),
+);
       },
     );
   } else {
@@ -106,10 +108,10 @@ class _BannerSliderState extends State<BannerSlider> {
       image: item["image"]!,
       buttonText: "VIEW MAPS",
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const MapsScreen()),
-        );
+       Navigator.push(
+  context,
+  MaterialPageRoute(builder: (_) => const MapDetailScreen()),
+);
       },
     );
   }
