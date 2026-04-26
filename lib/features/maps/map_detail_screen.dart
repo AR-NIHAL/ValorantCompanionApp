@@ -31,7 +31,7 @@ class MapDetailScreen extends ConsumerWidget {
               Positioned.fill(
                 child: Image.network(
                   map["displayIcon"] ?? "",
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
 

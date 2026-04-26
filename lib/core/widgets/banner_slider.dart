@@ -23,19 +23,19 @@ class _BannerSliderState extends State<BannerSlider> {
       "title": "JETT",
       "subtitle": "The Wind Master",
       "image":
-          "https://media.valorant-api.com/agents/9f0d8ba9-4140-b941-57d3-a7ad57c6b417/fullportrait.png"
+          "https://media.valorant-api.com/agents/9f0d8ba9-4140-b941-57d3-a7ad57c6b417/fullportrait.png",
     },
     {
       "title": "FRENZY",
       "subtitle": "Fast Weapon",
       "image":
-          "https://media.valorant-api.com/weapons/44d4e95c-4157-0037-81b2-17841bf2e8e3/displayicon.png"
+          "https://media.valorant-api.com/weapons/44d4e95c-4157-0037-81b2-17841bf2e8e3/displayicon.png",
     },
     {
       "title": "ASCENT",
       "subtitle": "Popular Map",
       "image":
-          "https://media.valorant-api.com/maps/7eaecc1b-4337-bbf6-6ab9-04b8f06b3319/displayicon.png"
+          "https://media.valorant-api.com/maps/7eaecc1b-4337-bbf6-6ab9-04b8f06b3319/displayicon.png",
     },
   ];
 
@@ -71,51 +71,55 @@ class _BannerSliderState extends State<BannerSlider> {
             controller: controller,
             itemCount: items.length,
             itemBuilder: (context, i) {
-  final item = items[i];
+              final item = items[i];
 
-  if (i == 0) {
-    return BannerCard(
-      title: item["title"]!,
-      subtitle: item["subtitle"]!,
-      image: item["image"]!,
-      buttonText: "VIEW AGENT",
-      onTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => const AgentDetailScreen(),
-    ),
-  );
-},
-    );
-  } else if (i == 1) {
-    return BannerCard(
-      title: item["title"]!,
-      subtitle: item["subtitle"]!,
-      image: item["image"]!,
-      buttonText: "VIEW GUNS",
-      onTap: () {
-        Navigator.push(
-  context,
-  MaterialPageRoute(builder: (_) => const WeaponDetailScreen()),
-);
-      },
-    );
-  } else {
-    return BannerCard(
-      title: item["title"]!,
-      subtitle: item["subtitle"]!,
-      image: item["image"]!,
-      buttonText: "VIEW MAPS",
-      onTap: () {
-       Navigator.push(
-  context,
-  MaterialPageRoute(builder: (_) => const MapDetailScreen()),
-);
-      },
-    );
-  }
-},
+              if (i == 0) {
+                return BannerCard(
+                  title: item["title"]!,
+                  subtitle: item["subtitle"]!,
+                  image: item["image"]!,
+                  buttonText: "VIEW AGENT",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const AgentDetailScreen(),
+                      ),
+                    );
+                  },
+                );
+              } else if (i == 1) {
+                return BannerCard(
+                  title: item["title"]!,
+                  subtitle: item["subtitle"]!,
+                  image: item["image"]!,
+                  buttonText: "VIEW GUNS",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const WeaponDetailScreen(),
+                      ),
+                    );
+                  },
+                );
+              } else {
+                return BannerCard(
+                  title: item["title"]!,
+                  subtitle: item["subtitle"]!,
+                  image: item["image"]!,
+                  buttonText: "VIEW MAPS",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const MapDetailScreen(),
+                      ),
+                    );
+                  },
+                );
+              }
+            },
           ),
         ),
         const SizedBox(height: 10),
