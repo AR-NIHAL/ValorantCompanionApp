@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:valorant_companion_app/core/providers/api_provider.dart';
+import 'package:valorant_companion_app/core/providers/favorites_provider.dart';
 import 'package:valorant_companion_app/core/widgets/list_item_card.dart';
 
 class MapsListScreen extends ConsumerWidget {
@@ -9,6 +10,7 @@ class MapsListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mapsAsync = ref.watch(mapsProvider);
+    final favorites = ref.watch(favoritesProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text("Maps")),
@@ -23,8 +25,12 @@ class MapsListScreen extends ConsumerWidget {
               final item = maps[i];
 
               return ListItemCard(
-                name: item["displayName"] ?? "",
-                image: item["displayIcon"] ?? "",
+                name: item.displayName,
+                image: item.listViewIcon,
+                isFavorite: favorites.isFavorite(FavoriteType.map, item.uuid),
+                onFavoritePressed: () => ref
+                    .read(favoritesProvider.notifier)
+                    .toggleFavorite(FavoriteType.map, item.uuid),
               );
             },
           );

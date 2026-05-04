@@ -16,6 +16,8 @@ class WeaponDetailScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text("Error: $e")),
         data: (weapons) {
+          if (weapons.isEmpty) return const Center(child: Text("No Weapons"));
+
           if (selected == null && weapons.isNotEmpty) {
             Future.microtask(() {
               ref.read(selectedWeaponProvider.notifier).state = weapons[0];
@@ -26,7 +28,6 @@ class WeaponDetailScreen extends ConsumerWidget {
 
           return Stack(
             children: [
-              // 🔥 FAKE BACKGROUND (since no API bg)
               Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -37,21 +38,19 @@ class WeaponDetailScreen extends ConsumerWidget {
                 ),
               ),
 
-              // 🔥 WEAPON IMAGE
               Center(
                 child: Image.network(
-                  weapon["displayIcon"] ?? "",
+                  weapon.displayIcon,
                   height: 200,
                   fit: BoxFit.contain,
                 ),
               ),
 
-              // 🔥 TITLE
               Positioned(
                 top: 80,
                 left: 20,
                 child: Text(
-                  weapon["displayName"] ?? "",
+                  weapon.displayName,
                   style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -59,7 +58,6 @@ class WeaponDetailScreen extends ConsumerWidget {
                 ),
               ),
 
-              // 🔥 BOTTOM SELECTOR
               Positioned(
                 bottom: 30,
                 left: 0,
@@ -71,8 +69,7 @@ class WeaponDetailScreen extends ConsumerWidget {
                     itemCount: weapons.length,
                     itemBuilder: (_, i) {
                       final item = weapons[i];
-                      final isSelected =
-                          item["uuid"] == weapon["uuid"];
+                      final isSelected = item.uuid == weapon.uuid;
 
                       return GestureDetector(
                         onTap: () {
@@ -85,7 +82,7 @@ class WeaponDetailScreen extends ConsumerWidget {
                           margin: const EdgeInsets.symmetric(horizontal: 8),
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.4),
+                            color: Colors.black.withValues(alpha: 0.4),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                               color: isSelected
@@ -98,11 +95,11 @@ class WeaponDetailScreen extends ConsumerWidget {
                             children: [
                               Expanded(
                                 child: Image.network(
-                                  item["displayIcon"] ?? "",
+                                  item.displayIcon,
                                 ),
                               ),
                               Text(
-                                item["displayName"],
+                                item.displayName,
                                 style: const TextStyle(fontSize: 12),
                               )
                             ],

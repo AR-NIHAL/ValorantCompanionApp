@@ -17,6 +17,8 @@ class MapDetailScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text("Error: $e")),
         data: (maps) {
+          if (maps.isEmpty) return const Center(child: Text("No Maps"));
+
           if (selected == null && maps.isNotEmpty) {
             Future.microtask(() {
               ref.read(selectedMapProvider.notifier).state = maps[0];
@@ -27,25 +29,22 @@ class MapDetailScreen extends ConsumerWidget {
 
           return Stack(
             children: [
-              // 🔥 MAP IMAGE AS BACKGROUND
               Positioned.fill(
                 child: Image.network(
-                  map["displayIcon"] ?? "",
+                  map.displayIcon,
                   fit: BoxFit.contain,
                 ),
               ),
 
-              // 🔥 OVERLAY
               Container(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withValues(alpha: 0.5),
               ),
 
-              // 🔥 TITLE
               Positioned(
                 top: 80,
                 left: 20,
                 child: Text(
-                  map["displayName"] ?? "",
+                  map.displayName,
                   style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -53,7 +52,6 @@ class MapDetailScreen extends ConsumerWidget {
                 ),
               ),
 
-              // 🔥 SELECTOR
               Positioned(
                 bottom: 30,
                 left: 0,
@@ -65,8 +63,7 @@ class MapDetailScreen extends ConsumerWidget {
                     itemCount: maps.length,
                     itemBuilder: (_, i) {
                       final item = maps[i];
-                      final isSelected =
-                          item["uuid"] == map["uuid"];
+                      final isSelected = item.uuid == map.uuid;
 
                       return GestureDetector(
                         onTap: () {
@@ -79,7 +76,7 @@ class MapDetailScreen extends ConsumerWidget {
                           margin: const EdgeInsets.symmetric(horizontal: 8),
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.4),
+                            color: Colors.black.withValues(alpha: 0.4),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                               color: isSelected
@@ -92,11 +89,11 @@ class MapDetailScreen extends ConsumerWidget {
                             children: [
                               Expanded(
                                 child: Image.network(
-                                  item["displayIcon"] ?? "",
+                                  item.listViewIcon,
                                 ),
                               ),
                               Text(
-                                item["displayName"],
+                                item.displayName,
                                 style: const TextStyle(fontSize: 12),
                               )
                             ],

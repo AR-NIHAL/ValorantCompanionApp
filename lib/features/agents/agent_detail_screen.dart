@@ -6,19 +6,6 @@ import '../../core/providers/agent_provider.dart';
 class AgentDetailScreen extends ConsumerWidget {
   const AgentDetailScreen({super.key});
 
-  Color _parseApiHex(String hex) {
-    hex = hex.replaceAll("#", "");
-    if (hex.length == 8) {
-      
-      String alpha = hex.substring(6, 8);
-      String rgb = hex.substring(0, 6);
-      hex = alpha + rgb;
-    } else if (hex.length == 6) {
-      hex = "FF$hex";
-    }
-    return Color(int.parse(hex, radix: 16));
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final agentsAsync = ref.watch(agentsProvider);
@@ -33,13 +20,12 @@ class AgentDetailScreen extends ConsumerWidget {
 
           final agent = selectedAgent ?? agents.first;
 
-          final List<dynamic> apiGradients =
-              agent["backgroundGradientColors"] ?? [];
-          final String? bgImageUrl = agent["background"];
-          final String? portraitUrl = agent["fullPortrait"];
+          final String bgImageUrl = agent.background;
+          final String portraitUrl = agent.fullPortrait;
+          final gradientColors = agent.backgroundGradientColors;
 
-          final List<Color> themeColors = apiGradients.isNotEmpty
-              ? apiGradients.map((c) => _parseApiHex(c.toString())).toList()
+          final List<Color> themeColors = gradientColors.isNotEmpty
+              ? gradientColors
               : [const Color(0xFF0F1923), const Color(0xFF0F1923)];
 
           return Stack(
@@ -56,7 +42,7 @@ class AgentDetailScreen extends ConsumerWidget {
                 ),
               ),
 
-              if (bgImageUrl != null)
+              if (bgImageUrl.isNotEmpty)
                 Positioned.fill(
                   child: Opacity(
                     opacity: 0.3, // Keeps the gradient dominant
@@ -68,7 +54,7 @@ class AgentDetailScreen extends ConsumerWidget {
                 bottom: 0,
                 left: -50,
                 right: -50,
-                child: portraitUrl != null
+                child: portraitUrl.isNotEmpty
                     ? Image.network(
                         portraitUrl,
                         height: MediaQuery.of(context).size.height * 0.8,
@@ -84,7 +70,7 @@ class AgentDetailScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      agent["displayName"]?.toUpperCase() ?? "",
+                      agent.displayName.toUpperCase(),
                       style: const TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.w900,
@@ -93,7 +79,7 @@ class AgentDetailScreen extends ConsumerWidget {
                       ),
                     ),
                     Text(
-                      agent["role"]?["displayName"]?.toUpperCase() ?? "",
+                      agent.roleName.toUpperCase(),
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.white70,
@@ -116,7 +102,7 @@ class AgentDetailScreen extends ConsumerWidget {
                     itemCount: agents.length,
                     itemBuilder: (context, index) {
                       final item = agents[index];
-                      final isSelected = item["uuid"] == agent["uuid"];
+                      final isSelected = item.uuid == agent.uuid;
 
                       return GestureDetector(
                         onTap: () =>
@@ -127,8 +113,8 @@ class AgentDetailScreen extends ConsumerWidget {
                           width: 80,
                           margin: const EdgeInsets.only(right: 12),
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(
-                              isSelected ? 0.6 : 0.2,
+                            color: Colors.black.withValues(
+                              alpha: isSelected ? 0.6 : 0.2,
                             ),
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
@@ -138,7 +124,7 @@ class AgentDetailScreen extends ConsumerWidget {
                               width: 2,
                             ),
                           ),
-                          child: Image.network(item["displayIcon"] ?? ""),
+                          child: Image.network(item.displayIcon),
                         ),
                       );
                     },

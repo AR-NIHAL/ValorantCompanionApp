@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:valorant_companion_app/core/providers/api_provider.dart';
+import 'package:valorant_companion_app/core/providers/favorites_provider.dart';
 import 'package:valorant_companion_app/core/widgets/list_item_card.dart';
 
 class WeaponsListScreen extends ConsumerWidget {
@@ -9,6 +10,7 @@ class WeaponsListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final weaponsAsync = ref.watch(weaponsProvider);
+    final favorites = ref.watch(favoritesProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text("Weapons")),
@@ -23,8 +25,13 @@ class WeaponsListScreen extends ConsumerWidget {
               final item = weapons[i];
 
               return ListItemCard(
-                name: item["displayName"] ?? "",
-                image: item["displayIcon"] ?? "",
+                name: item.displayName,
+                image: item.displayIcon,
+                isFavorite:
+                    favorites.isFavorite(FavoriteType.weapon, item.uuid),
+                onFavoritePressed: () => ref
+                    .read(favoritesProvider.notifier)
+                    .toggleFavorite(FavoriteType.weapon, item.uuid),
               );
             },
           );
