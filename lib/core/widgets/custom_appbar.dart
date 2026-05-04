@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:valorant_companion_app/features/favorites/favorites_screen.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -34,24 +35,20 @@ class CustomAppBar extends StatelessWidget {
             ],
           ),
 
-          // RIGHT ICON
-          Stack(
-            children: [
-              const Icon(Icons.notifications_none, size: 28),
-              Positioned(
-                right: 2,
-                top: 2,
-                child: Container(
-                  height: 8,
-                  width: 8,
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              )
-            ],
-          )
+          IconButton(
+            tooltip: 'Favorites',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const FavoritesScreen()),
+              );
+            },
+            icon: const Icon(
+              Icons.favorite_border,
+              color: Color(0xFFFF4655),
+              size: 30,
+            ),
+          ),
         ],
       ),
     );
